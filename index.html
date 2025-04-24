@@ -1,19 +1,32 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>AR with p5.js and AR.js</title>
+    <title>MindAR Face Tracking</title>
+    <meta charset="utf-8">
     <script src="https://cdn.jsdelivr.net/npm/aframe@1.4.2/dist/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/ar.js@3.4.2/aframe/build/aframe-ar.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.3/dist/aframe/mindar-face-aframe.prod.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+    <style>
+      body { margin: 0; overflow: hidden; }
+      canvas { position: absolute; top: 0; left: 0; z-index: 5; pointer-events: none; }
+    </style>
   </head>
-  <body style="margin: 0; overflow: hidden;">
-    <a-scene embedded arjs>
-      <a-marker preset="hiro">
-        <a-entity id="box" geometry="primitive: box" color="blue" position="0 0.5 0"></a-entity>
-      </a-marker>
-      <a-entity camera></a-entity>
+  <body>
+    <a-scene mindar-face embedded color-space="sRGB" renderer="precision: mediump; antialias: true" vr-mode-ui="enabled: false">
+      <a-assets>
+        <a-asset-item id="maskModel" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/examples/face-tracking/assets/face-mask/face-mask.obj"></a-asset-item>
+        <a-asset-item id="maskMaterial" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/examples/face-tracking/assets/face-mask/face-mask.mtl"></a-asset-item>
+      </a-assets>
+      <a-entity mindar-face-target="anchorIndex: 1">
+        <a-entity 
+          obj-model="obj: #maskModel; mtl: #maskMaterial"
+          position="0 0 0"
+          scale="0.065 0.065 0.065">
+        </a-entity>
+      </a-entity>
+      <a-camera active="true" position="0 0 0"></a-camera>
     </a-scene>
-    <canvas id="p5canvas" style="position: absolute; top: 0; left: 0; z-index: 5;"></canvas>
+    <canvas id="p5canvas"></canvas>
     <script src="sketch.js"></script>
   </body>
 </html>
